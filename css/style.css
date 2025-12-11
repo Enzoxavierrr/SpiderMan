@@ -17,6 +17,7 @@
   display: inline-block;
   background: linear-gradient(224.78deg, #E42B2F 8.12%, #1141BD 92.21%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -723,6 +724,72 @@
   .div-ps {
     top: 88%;
     left: 50%;
+  }
+}
+
+.scroll-down {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  animation: scrollBounce 2s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+  
+}
+
+.scroll-down:hover {
+  opacity: 0.8;
+}
+
+.scroll-down:hover .scroll-mouse svg rect,
+.scroll-down:hover .scroll-mouse svg line {
+  stroke: #F8FBFF;
+  transition: stroke 0.3s ease;
+}
+
+.scroll-mouse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-text {
+  color: #EBEEF2;
+  font-family: 'Cabin', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-down:hover .scroll-text {
+  opacity: 1;
+}
+
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .scroll-down {
+    top: 95%;
+  }
+  .scroll-text {
+    font-size: 9px;
+    letter-spacing: 1.5px;
   }
 }
 
@@ -2098,4 +2165,292 @@ input, select, option, textarea {
 
 input[type=date], select, option {
   height: 44px;
+}
+
+/*================================*/
+/*============ WALLPAPERS ============*/
+/*================================*/
+.wallpapers-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #040C1B;
+  padding: 128px 24px;
+  position: relative;
+}
+
+@media screen and (max-width: 960px) {
+  .wallpapers-section {
+    padding: 96px 16px;
+  }
+}
+
+.wallpapers-section h2 {
+  margin-bottom: 64px;
+}
+
+.wallpapers-grid {
+  column-count: 4;
+  column-gap: 24px;
+  width: 100%;
+}
+
+@media screen and (max-width: 1268px) and (min-width: 960px) {
+  .wallpapers-grid {
+    column-count: 3;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .wallpapers-grid {
+    column-count: 2;
+    column-gap: 16px;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .wallpapers-grid {
+    column-count: 1;
+  }
+}
+
+.wallpaper-item {
+  break-inside: avoid;
+  margin-bottom: 24px;
+  display: inline-block;
+  width: 100%;
+}
+
+@media screen and (max-width: 960px) {
+  .wallpaper-item {
+    margin-bottom: 16px;
+  }
+}
+
+.wallpaper-card {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #111929;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.wallpaper-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.wallpaper-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+  border-radius: 4px;
+}
+
+.wallpaper-card:hover .wallpaper-image {
+  transform: scale(1.05);
+}
+
+.wallpaper-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(4, 12, 27, 0) 0%, rgba(4, 12, 27, 0.95) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 4px;
+}
+
+.wallpaper-card:hover .wallpaper-overlay {
+  opacity: 1;
+}
+
+.wallpaper-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.wallpaper-btn {
+  padding: 12px 32px;
+  border: 0;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Cabin", sans-serif;
+  font-size: 14px;
+  line-height: 150%;
+  font-weight: 400;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform: skewX(-7deg);
+  position: relative;
+  user-select: none;
+}
+
+.wallpaper-btn-view {
+  background: linear-gradient(189.8deg, #EA1D22 -4%, #640204 104%);
+  color: #F8FBFF;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.wallpaper-btn-view:hover {
+  transform: skewX(-7deg) scale(1.05);
+}
+
+.wallpaper-btn-download {
+  background: rgba(35, 44, 62, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(17, 25, 41, 0.4);
+  color: #F8FBFF;
+}
+
+.wallpaper-btn-download:hover {
+  transform: skewX(-7deg) scale(1.05);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+@media screen and (max-width: 960px) {
+  .wallpaper-btn {
+    padding: 10px 24px;
+    font-size: 12px;
+  }
+}
+
+/*================================*/
+/*============ LIGHTBOX ============*/
+/*================================*/
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(4, 12, 27, 0.98);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: transparent;
+  border: 0;
+  color: #F8FBFF;
+  font-size: 48px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.4s ease, color 0.4s ease;
+  z-index: 10000;
+  font-family: "Cabin", sans-serif;
+  line-height: 1;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.2);
+  color: #E42B2F;
+}
+
+@media screen and (max-width: 960px) {
+  .lightbox-close {
+    top: 20px;
+    right: 20px;
+    font-size: 36px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0px 8px 48px rgba(0, 0, 0, 0.9);
+  user-select: none;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(35, 44, 62, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(17, 25, 41, 0.4);
+  color: #F8FBFF;
+  font-size: 36px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.4s ease, background 0.4s ease;
+  z-index: 10000;
+  font-family: "Cabin", sans-serif;
+}
+
+.lightbox-nav:hover {
+  transform: translateY(-50%) scale(1.1);
+  background: rgba(35, 44, 62, 0.9);
+}
+
+.lightbox-prev {
+  left: 30px;
+}
+
+.lightbox-next {
+  right: 30px;
+}
+
+@media screen and (max-width: 960px) {
+  .lightbox-nav {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+  }
+  
+  .lightbox-prev {
+    left: 15px;
+  }
+  
+  .lightbox-next {
+    right: 15px;
+  }
 }
