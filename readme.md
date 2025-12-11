@@ -36,6 +36,8 @@ Este projeto foi desenvolvido com base nos ensinamentos e referências do curso 
     ```
 3.  Abra o arquivo `index.html` em seu navegador de preferência.
 
+Ou acesse o link: https://spider-man-mocha.vercel.app/
+
 **Dica**: Para uma melhor experiência de desenvolvimento, recomendo utilizar o **Live Server** no VSCode para ter a funcionalidade de reload automático ao salvar o projeto.
 
 ---
