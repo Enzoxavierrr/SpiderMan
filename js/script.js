@@ -160,7 +160,8 @@ let allWallpaperImages = [];
 
 // Coletar todas as imagens de wallpaper
 function initWallpaperImages() {
-  allWallpaperImages = Array.from(wallpaperImages).map(img => img.src);
+  const wallpaperImgs = document.querySelectorAll('.wallpaper-image');
+  allWallpaperImages = Array.from(wallpaperImgs).map(img => img.src);
 }
 
 // Abrir lightbox
@@ -170,13 +171,36 @@ function openLightbox(imageSrc, imageIndex = null) {
   
   if (!lightbox || !lightboxImage) return;
   
-  if (imageIndex !== null) {
+  // Se temos um índice válido, usar diretamente
+  if (imageIndex !== null && imageIndex >= 0 && imageIndex < allWallpaperImages.length) {
     currentImageIndex = imageIndex;
+    lightboxImage.src = allWallpaperImages[currentImageIndex];
   } else {
-    currentImageIndex = allWallpaperImages.indexOf(imageSrc);
+    // Tentar encontrar a imagem pelo caminho relativo ou src completo
+    const wallpaperImgs = document.querySelectorAll('.wallpaper-image');
+    let foundIndex = -1;
+    
+    // Procurar pela imagem que corresponde ao caminho
+    wallpaperImgs.forEach((img, idx) => {
+      if (img.src.includes(imageSrc) || imageSrc.includes(img.src.split('/').pop())) {
+        foundIndex = idx;
+      }
+    });
+    
+    if (foundIndex !== -1) {
+      currentImageIndex = foundIndex;
+      lightboxImage.src = allWallpaperImages[foundIndex];
+    } else if (allWallpaperImages.length > 0) {
+      // Fallback: usar primeira imagem
+      currentImageIndex = 0;
+      lightboxImage.src = allWallpaperImages[0];
+    } else {
+      // Se não encontrar, tentar usar o imageSrc diretamente
+      lightboxImage.src = imageSrc;
+      currentImageIndex = 0;
+    }
   }
   
-  lightboxImage.src = imageSrc;
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
   
@@ -236,20 +260,29 @@ function updateNavButtons() {
 
 // Download de imagem
 function downloadImage(imageSrc, imageName) {
-  const link = document.createElement('a');
-  link.href = imageSrc;
-  link.download = imageName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  try {
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = imageName || 'spider-man-wallpaper.jpg';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    
+    // Remover o link após um pequeno delay
+    setTimeout(() => {
+      document.body.removeChild(link);
+    }, 100);
+  } catch (error) {
+    console.error('Erro ao baixar imagem:', error);
+    // Fallback: abrir imagem em nova aba
+    window.open(imageSrc, '_blank');
+  }
 }
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
   // Aguardar um pouco para garantir que todos os elementos estejam carregados
   setTimeout(() => {
-    initWallpaperImages();
-    
     const wallpaperViewBtns = document.querySelectorAll('.wallpaper-btn-view');
     const wallpaperDownloadBtns = document.querySelectorAll('.wallpaper-btn-download');
     const wallpaperImgs = document.querySelectorAll('.wallpaper-image');
@@ -258,12 +291,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxPrevBtn = document.querySelector('.lightbox-prev');
     const lightboxNextBtn = document.querySelector('.lightbox-next');
     
+    // Inicializar imagens de wallpaper
+    initWallpaperImages();
+    
     // Botões de visualizar
-    wallpaperViewBtns.forEach((btn, index) => {
+    wallpaperViewBtns.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const imageSrc = btn.getAttribute('data-image');
-        openLightbox(imageSrc, index);
+        // Encontrar o wallpaper-item pai
+        const wallpaperItem = btn.closest('.wallpaper-item');
+        if (wallpaperItem) {
+          // Encontrar a imagem dentro do wallpaper-item
+          const wallpaperImg = wallpaperItem.querySelector('.wallpaper-image');
+          if (wallpaperImg) {
+            // Encontrar o índice da imagem na lista
+            const imageIndex = Array.from(wallpaperImgs).indexOf(wallpaperImg);
+            if (imageIndex !== -1) {
+              openLightbox(wallpaperImg.src, imageIndex);
+            } else {
+              openLightbox(wallpaperImg.src, null);
+            }
+          }
+        }
       });
     });
     
@@ -271,9 +320,17 @@ document.addEventListener('DOMContentLoaded', () => {
     wallpaperDownloadBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const imageSrc = btn.getAttribute('data-image');
-        const imageName = btn.getAttribute('data-name');
-        downloadImage(imageSrc, imageName);
+        // Encontrar o wallpaper-item pai
+        const wallpaperItem = btn.closest('.wallpaper-item');
+        if (wallpaperItem) {
+          // Encontrar a imagem dentro do wallpaper-item
+          const wallpaperImg = wallpaperItem.querySelector('.wallpaper-image');
+          if (wallpaperImg) {
+            const imageSrc = wallpaperImg.src;
+            const imageName = btn.getAttribute('data-name') || 'spider-man-wallpaper.jpg';
+            downloadImage(imageSrc, imageName);
+          }
+        }
       });
     });
     
